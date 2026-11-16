@@ -216,7 +216,7 @@ namespace TaskTracker.UI
 
             if (useArrowMenu)
             {
-                Console.WriteLine("\\nНажмите любую клавишу для продолжения...");
+                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
                 Console.ReadKey();
             }
         }
@@ -298,7 +298,7 @@ namespace TaskTracker.UI
 
             if (useArrowMenu)
             {
-                Console.WriteLine("\\nНажмите любую клавишу для продолжения...");
+                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
                 Console.ReadKey();
             }
         }
