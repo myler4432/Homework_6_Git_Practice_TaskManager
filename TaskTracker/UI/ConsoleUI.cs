@@ -43,6 +43,7 @@ namespace TaskTracker.UI
                         "Изменить статус задачи",
                         "Удалить задачу",
                         "Статистика",
+                        "Фильтр по приоритету",
                         "Сохранить и выйти"
                     );
                 }
@@ -69,6 +70,9 @@ namespace TaskTracker.UI
                         ShowStatistics();
                         break;
                     case 6:
+                        ShowTasksByPriority();
+                        break;
+                    case 7:
                         storage.SaveTasks(taskService.GetAllTasks());
                         running = false;
                         Console.WriteLine("Задачи сохранены. До свидания!");
@@ -86,7 +90,8 @@ namespace TaskTracker.UI
             Console.WriteLine("3. Изменить статус задачи");
             Console.WriteLine("4. Удалить задачу");
             Console.WriteLine("5. Статистика");
-            Console.WriteLine("6. Сохранить и выйти");
+            Console.WriteLine("6. Фильтр по приоритету");
+            Console.WriteLine("7. Сохранить и выйти");
             Console.Write("Выберите действие: ");
 
             string input = Console.ReadLine();
@@ -247,6 +252,86 @@ namespace TaskTracker.UI
             else
             {
                 Console.WriteLine("Задача не найдена.");
+            }
+
+            if (useArrowMenu)
+            {
+                Console.WriteLine("\nНажмите любую клавишу для продолжения...");
+                Console.ReadKey();
+            }
+        }
+
+
+        private void ShowTasksByPriority()
+        {
+            Console.WriteLine();
+            Console.WriteLine("Выберите приоритет:");
+            Console.WriteLine("1. Low");
+            Console.WriteLine("2. Medium");
+            Console.WriteLine("3. High");
+            Console.Write("Ваш выбор: ");
+
+            string input = Console.ReadLine();
+            int choice;
+            if (!int.TryParse(input, out choice) || choice < 1 || choice > 3)
+            {
+                Console.WriteLine("Неверный выбор.");
+                return;
+            }
+
+            TaskPriority priority = (TaskPriority)(choice - 1);
+            List<TaskItem> filteredTasks = taskService.GetTasksByPriority(priority);
+
+            Console.WriteLine();
+            Console.WriteLine("--- Задачи с приоритетом " + priority + " ---");
+            if (filteredTasks.Count == 0)
+            {
+                Console.WriteLine("Задач с таким приоритетом нет.");
+            }
+            else
+            {
+                for (int i = 0; i < filteredTasks.Count; i++)
+                {
+                    Console.WriteLine(filteredTasks[i].ToString());
+                }
+            }
+
+            if (useArrowMenu)
+            {
+                Console.WriteLine("\\nНажмите любую клавишу для продолжения...");
+                Console.ReadKey();
+            }
+        }
+
+        private void SetTaskPriority()
+        {
+            Console.WriteLine();
+            Console.Write("Введите ID задачи: ");
+            string input = Console.ReadLine();
+            int id;
+            if (!int.TryParse(input, out id))
+            {
+                Console.WriteLine("Неверный ID.");
+                return;
+            }
+
+            Console.WriteLine("Приоритет:");
+            Console.WriteLine("1. Low");
+            Console.WriteLine("2. Medium");
+            Console.WriteLine("3. High");
+            Console.Write("Выберите: ");
+
+            string prInput = Console.ReadLine();
+            int prChoice;
+            if (int.TryParse(prInput, out prChoice))
+            {
+                switch (prChoice)
+                {
+                    case 1: Console.WriteLine("Приоритет установлен: Low"); break;
+                    case 2: Console.WriteLine("Приоритет установлен: Medium"); break;
+                    case 3: Console.WriteLine("Приоритет установлен: High"); break;
+                    default: Console.WriteLine("Неверный выбор."); break;
+                }
             }
 
             if (useArrowMenu)
